@@ -40,4 +40,4 @@ jobs:
       - name: Build and publish with Poetry
         run: |
           python -m poetry version prerelease
-          python -m poetry publish --build -r test-pypi
+          python -m poetry publish --build -r test-pypi -u __token__ -p ${{secrets.TEST_PYPI}}
