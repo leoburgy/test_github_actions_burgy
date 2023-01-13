@@ -3,14 +3,33 @@ run-name: ${{ github.actor }} is testing out gh actions
 on: [push]
 jobs:
   Explore-gh-actions:
-    runs-on: [ubuntu-latest, macos-latest]
+    runs-on: ubuntu-latest
     steps:
-      - run: echo "The job was automatically triggered by ${{ github.event_name }} event."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List all files in the repo
+      - uses: actions/checkout@v1
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.0
+
+      - name: Install poetry
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "this job's status is ${{ job.status }}."
+          python -m pip install poetry==1.1.11
+
+      - name: Configure poetry
+        run: |
+          python -m poetry config virtualenvs.in-project true
+
+      - name: Cache the virtualenv
+        uses: actions/cache@v2
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        run: |
+          python -m poetry install
+
+      - name: Run tests
+        run: |
+          python -m poetry run python -m pytest -sxv
