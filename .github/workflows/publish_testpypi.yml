@@ -6,7 +6,7 @@ on:
       - dev
 
 jobs:
-  Publish-to-testPyPI:
+  Publish-to-test-PyPI:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +39,5 @@ jobs:
 
       - name: Build and publish with Poetry
         run: |
-          python -m poetry build
           python -m poetry version prerelease
-          python -m poetry publish -r test-pypi
+          python -m poetry publish --build -r test-pypi
