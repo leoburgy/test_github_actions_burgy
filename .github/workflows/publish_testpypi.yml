@@ -24,6 +24,8 @@ jobs:
       - name: Configure poetry
         run: |
           python -m poetry config virtualenvs.in-project true
+          python -m poetry config repositories.test-pypi https://test.pypi.org/legacy/
+          python -m poetry config pypi-token.test-pypi ${{secrets.TEST_PYPI}}
 
       - name: Cache the virtualenv
         uses: actions/cache@v3.2.3
@@ -34,3 +36,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m poetry install
+
+      - name: Build and publish with Poetry
+        run: |
+          python -m poetry build
+          python -m poetry version prerelease
+          python -m poetry publish -r test-pypi
