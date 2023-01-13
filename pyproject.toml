@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "test_github_actions_burgy"
-version = "0.1.0"
+version = "0.1.1"
 description = "this is a description"
 authors = ["Leo Burgy <leo.burgy@gmail.com>"]
 
